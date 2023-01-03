@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<!-- RIDAAAAAAA HIIIIIIIII WASSSUP BRO -->
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>replit</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<body>
+  <!--   <button onclick="darkMode()">Toggle dark mode</button> -->
+  <div class="modal fade" id="theModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <div class = "flexer">
+              <h2 class="modal-title" id="ModalLabelOuter"></h2>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" style = "float:left">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="flexer">
+                <input type="text" id="modalTitleMonth" class="form-control input-lg" placeholder="Month"></input>&nbsp
+                <input type="text" id="modalTitleDay" class="form-control input-lg" placeholder="Day"></input>&nbsp
+                <input type="text" id="modalTitleYear" class="form-control input-lg" placeholder="Year"></input>
+            </div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div id ="errorModal"></div>
+          <div class="mb-3">
+            <label for="titleTextInput" class="form-label">Event</label>
+            <input type="text" id="titleTextInputModal" class="form-control" placeholder="Title"> </input>
+          </div>
+          <div class="mb-3">
+            <label for="select" class="form-label">Priority</label>
+            <select id="selectModal" class="form-select">
+              <option value="">None</option>
+              <option value="!">!</option>
+              <option value="!!">!!</option>
+              <option value="!!!">!!!</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="select" class="form-label">Category</label>
+            <select id="categoryModal" class="form-select">
+              <option value=" ">None</option>
+              <option value="Homework">Homework</option>
+              <option value="Test">Test</option>
+              <option value="Chore">Chore</option>
+              <option value="Meetup">Meetup</option>
+              <option value="Interview">Interview</option>
+              <option value="Holiday">Holiday</option>
+              <option value="Misc">Misc</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="noteTextInput" class="form-label">Note</label>
+            <textarea type="text" id="noteTextInputModal" class="form-control" placeholder="Description"
+              style="height: 72px;"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="saveChanges" onclick = "Calendar.editEventClicked()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
+          role="tab" aria-controls="home" aria-selected="true" onclick="Calendar.setMonthEvents()">Calendar</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="todo-tab" data-bs-toggle="tab" data-bs-target="#todo" type="button" role="tab"
+          aria-controls="todo" aria-selected="false"
+          onclick="Calendar.filtered.todoButtonState--;Calendar.filterImportance(0);">Todo</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button"
+          role="tab" aria-controls="completed" aria-selected="false"
+          onclick="Calendar.filtered.completeButtonState--;Calendar.filterImportance(1);">Completed</button>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+        <div class="row">
+          <div class="col">
+            <div id="calendar">
+              <table class="table table-bordered" id="calendar">
+                <thead>
+                  <tr>
+                    <div style="height: 10px;"></div>
+                    <div style="display: flex;justify-content:space-between;">
+                      <button type="button" class="btn btn-outline-primary position-relative"
+                        style="display: inline-block;" onclick="Calendar.changeMonth(-1)">
+                        < </button>
+                          <h2 class="p-2" style="text-align:center; display: inline-block;" id="label"></h2>
+                          <button type="button" class="btn btn-outline-primary position-relative"
+                            style="float: right; display: inline-block;" onclick="Calendar.changeMonth(1)">></button>
+                    </div>
+                  </tr>
+                  <tr>
+                    <th scope="col" class="column">Sun</th>
+                    <th scope="col" class="column">Mon</th>
+                    <th scope="col" class="column">Tue</th>
+                    <th scope="col" class="column">Wed</th>
+                    <th scope="col" class="column">Thu</th>
+                    <th scope="col" class="column">Fri</th>
+                    <th scope="col" class="column">Sat</th>
+                  </tr>
+                </thead>
+                <tbody id="calendarBody" class="tbody">
+                  <tr id="row1">
+                    <td id="t0" class="item">
+                      <div id="0"></div>
+                      <div id="e0">&nbsp</div>
+                    </td>
+                    <td id="t1" class="item">
+                      <div id="1"></div>
+                      <div id="e1">&nbsp</div>
+                    </td>
+                    <td id="t2" class="item">
+                      <div id="2"></div>
+                      <div id="e2">&nbsp</div>
+                    </td>
+                    <td id="t3" class="item">
+                      <div id="3"></div>
+                      <div id="e3">&nbsp</div>
+                    </td>
+                    <td id="t4" class="item">
+                      <div id="4"></div>
+                      <div id="e4">&nbsp</div>
+                    </td>
+                    <td id="t5" class="item">
+                      <div id="5"></div>
+                      <div id="e5">&nbsp</div>
+                    </td>
+                    <td id="t6" class="item">
+                      <div id="6"></div>
+                      <div id="e6">&nbsp</div>
+                    </td>
+                  </tr>
+                  <tr id="row2">
+                    <td id="t7" class="item">
+                      <div id="7"></div>
+                      <div id="e7">&nbsp</div>
+                    </td>
+                    <td id="t8" class="item">
+                      <div id="8"></div>
+                      <div id="e8">&nbsp</div>
+                    </td>
+                    <td id="t9" class="item">
+                      <div id="9"></div>
+                      <div id="e9">&nbsp</div>
+                    </td>
+                    <td id="t10" class="item">
+                      <div id="10"></div>
+                      <div id="e10">&nbsp</div>
+                    </td>
+                    <td id="t11" class="item">
+                      <div id="11"></div>
+                      <div id="e11">&nbsp</div>
+                    </td>
+                    <td id="t12" class="item">
+                      <div id="12"></div>
+                      <div id="e12">&nbsp</div>
+                    </td>
+                    <td id="t13" class="item">
+                      <div id="13"></div>
+                      <div id="e13">&nbsp</div>
+                    </td>
+                  </tr>
+                  <tr id="row3">
+                    <td id="t14" class="item">
+                      <div id="14"></div>
+                      <div id="e14">&nbsp</div>
+                    </td>
+                    <td id="t15" class="item">
+                      <div id="15""></div>
+                      <div id="e15">&nbsp</div>
+                    </td>
+                    <td id="t16" class="item">
+                      <div id="16"></div>
+                      <div id="e16">&nbsp</div>
+                    </td>
+                    <td id="t17" class="item">
+                      <div id="17"></div>
+                      <div id="e17">&nbsp</div>
+                    </td>
+                    <td id="t18" class="item">
+                      <div id="18"></div>
+                      <div id="e18">&nbsp</div>
+                    </td>
+                    <td id="t19" class="item">
+                      <div id="19"></div>
+                      <div id="e19">&nbsp</div>
+                    </td>
+                    <td id="t20" class="item">
+                      <div id="20"></div>
+                      <div id="e20">&nbsp</div>
+                    </td>
+                  </tr>
+                  <tr id="row4">
+                    <td id="t21" class="item">
+                      <div id="21"></div>
+                      <div id="e21">&nbsp</div>
+                    </td>
+                    <td id="t22" class="item">
+                      <div id="22"></div>
+                      <div id="e22">&nbsp</div>
+                    </td>
+                    <td id="t23" class="item">
+                      <div id="23"></div>
+                      <div id="e23">&nbsp</div>
+                    </td>
+                    <td id="t24" class="item">
+                      <div id="24"></div>
+                      <div id="e24">&nbsp</div>
+                    </td>
+                    <td id="t25" class="item">
+                      <div id="25"></div>
+                      <div id="e25">&nbsp</div>
+                    </td>
+                    <td id="t26" class="item">
+                      <div id="26"></div>
+                      <div id="e26">&nbsp</div>
+                    </td>
+                    <td id="t27" class="item">
+                      <div id="27"></div>
+                      <div id="e27">&nbsp</div>
+                    </td>
+                  <tr id="row5">
+                    <td id="t28" class="item">
+                      <div id="28"></div>
+                      <div id="e28">&nbsp</div>
+                    </td>
+                    <td id="t29" class="item">
+                      <div id="29"></div>
+                      <div id="e29">&nbsp</div>
+                    </td>
+                    <td id="t30" class="item">
+                      <div id="30"></div>
+                      <div id="e30">&nbsp</div>
+                    </td>
+                    <td id="t31" class="item">
+                      <div id="31"></div>
+                      <div id="e31">&nbsp</div>
+                    </td>
+                    <td id="t32" class="item">
+                      <div id="32"></div>
+                      <div id="e32">&nbsp</div>
+                    </td>
+                    <td id="t33" class="item">
+                      <div id="33"></div>
+                      <div id="e33">&nbsp</div>
+                    </td>
+                    <td id="t34" class="item">
+                      <div id="34"></div>
+                      <div id="e34">&nbsp</div>
+                    </td>
+                  </tr>
+                  <tr id="row6">
+                    <td id="t35" class="item">
+                      <div id="35"></div>
+                      <div id="e35">&nbsp</div>
+                    </td>
+                    <td id="t36" class="item">
+                      <div id="36"></div>
+                      <div id="e36">&nbsp</div>
+                    </td>
+                    <td id="t37" class="item">
+                      <div id="37"></div>
+                      <div id="e37">&nbsp</div>
+                    </td>
+                    <td id="t38" class="item">
+                      <div id="38"></div>
+                      <div id="e38">&nbsp</div>
+                    </td>
+                    <td id="t39" class="item">
+                      <div id="39"></div>
+                      <div id="e39">&nbsp</div>
+                    </td>
+                    <td id="t40" class="item">
+                      <div id="40"></div>
+                      <div id="e40">&nbsp</div>
+                    </td>
+                    <td id="t41" class="item">
+                      <div id="41"></div>
+                      <div id="e41">&nbsp</div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="col input-col">
+            <div style="height: 10px;"></div>
+            <div class="card">
+              <div class="card-body">
+                <legend>Create Event</legend>
+                <div id ="error"></div>
+                <h7 id="eventMonth"></h7>
+                <h7 id="eventDate"></h7>
+                <h7 id="eventYear"></h7>
+                <div class="mb-3">
+                  <label for="titleTextInput" class="form-label">Event</label>
+                  <input type="text" id="titleTextInput" class="form-control" placeholder="Title">
+                </div>
+                <div class="mb-3">
+                  <label for="select" class="form-label">Priority</label>
+                  <select id="select" class="form-select">
+                    <option value="">None</option>
+                    <option value="!">!</option>
+                    <option value="!!">!!</option>
+                    <option value="!!!">!!!</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="select" class="form-label">Category</label>
+                  <select id="category" class="form-select">
+                    <option value=" ">None</option>
+                    <option value="Homework">Homework</option>
+                    <option value="Test">Test</option>
+                    <option value="Chore">Chore</option>
+                    <option value="Meetup">Meetup</option>
+                    <option value="Interview">Interview</option>
+                    <option value="Holiday">Holiday</option>
+                    <option value="Misc">Misc</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="noteTextInput" class="form-label">Note</label>
+                  <textarea type="text" id="noteTextInput" class="form-control" placeholder="Description"
+                    style="height: 72px;"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" onclick="Calendar.createEventClicked()">Submit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="todo" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="container mt-3">
+          <h2 class="headingTwo">
+            <div>Todo Events</div>&nbsp<button id="todoButtonState" type="submit" class="btn btn-light"
+              style="height: 40px" onclick="Calendar.filterImportance(0);"></button> &nbsp
+            <select id="categoryFilter1" class="form-select" style="height: 40px; width: 150px"
+              onchange="Calendar.filterCategory(0);">
+              <option value="">Default</option>
+              <option value=" ">None</option>
+              <option value="Homework">Homework</option>
+              <option value="Test">Test</option>
+              <option value="Chore">Chore</option>
+              <option value="Meetup">Meetup</option>
+              <option value="Interview">Interview</option>
+              <option value="Holiday">Holiday</option>
+              <option value="Misc">Misc</option>
+            </select>
+          </h2>
+          <div id="todoEventsList">
+<!--             <div id = "todoEventsList1" style = "width: 48%"></div>
+            <div id = "todoEventsDivider" style = "width: 10px"></div>
+            <div id = "todoEventsList2" style = "width: 48%"></div> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="contact-tab">
+        <div class="container mt-3">
+          <h2 class="headingTwo">
+            <div>Complete Events</div>&nbsp<button id="completeButtonState" type="submit" class="btn btn-light"
+              style="height: 40px" onclick="Calendar.filterImportance(1);"></button> &nbsp
+            <select id="categoryFilter2" class="form-select" style="height: 40px; width: 150px"
+              onchange="Calendar.filterCategory(1)">
+              <option value="">Default</option>
+              <option value=" ">None</option>
+              <option value="Homework">Homework</option>
+              <option value="Test">Test</option>
+              <option value="Chore">Chore</option>
+              <option value="Meetup">Meetup</option>
+              <option value="Interview">Interview</option>
+              <option value="Holiday">Holiday</option>
+              <option value="Misc">Misc</option>
+            </select>
+          </h2>
+          <div id="completedEventsList">
+<!--             <div id = "completedEventsList1" style = "width: 48%"></div>
+            <div id = "completedEventsDivider" style = "width: 10px"></div>
+            <div id = "completedEventsList2" style = "width: 48%"></div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  </div>
+  </div>
+  <script src="script.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+    integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+    integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

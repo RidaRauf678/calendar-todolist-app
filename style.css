@@ -1,0 +1,113 @@
+body{
+  padding-top: 20px;
+  padding-right: 30px;
+  padding-left: 30px;
+}
+
+.input-col {
+  width: 100px
+}
+
+.row {
+    display: flex;
+}
+
+.container {
+  align-content: center;
+}
+
+.disabled {
+  pointer-events:none;
+}
+
+.item:hover {
+    cursor: pointer;
+    background-color: #d6d6d6;
+}
+
+.item:active, .item-clicked {
+    cursor: pointer;
+    background-color: #ffc7d1;
+}
+
+.item {
+  height: 50px;
+}
+
+.table-light {
+  height: 50px;
+}
+
+.table-default {
+  height: 50px;
+}
+
+.column {
+  width: 50px;
+  text-align: center;
+}
+
+.tbody {
+  text-align: right;
+}
+
+.title {
+  align-items: center; 
+}
+
+/* .title{
+  text-align: center;
+} */
+
+/* br {
+  display: block; 
+  margin: 5px 0; 
+}  */
+
+.btn {
+  height: 50px;
+}
+
+
+.disabled{
+  pointer-events: none;
+}
+
+#right_button {
+  padding-left: 100px;
+}
+
+.move-right{
+  text-align: right;
+}
+
+.btn-light, .btn-light:hover, .btn-light:active, .btn-light:visited {
+  width: 100px;
+  height: 100%;
+}
+
+.headingTwo {
+  display: flex;
+}
+
+.btn-outline-secondary{
+  width: 30px;
+  height: 30px;
+  align-items: center;
+}
+
+.card text-white bg-danger mb-3{
+  background: #FA897B !important;
+}
+
+.card-footer{
+  min-height:38.07px;
+}
+
+.flexer{
+  display: flex;
+}
+/* .dark-mode {
+  background-color: black;
+  color: white;
+} */
